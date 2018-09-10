@@ -1,19 +1,18 @@
-
 CREATE TABLE customer(
-    id INT PRIMARY KEY,
+    id INT IDENTITY (1, 1) NOT NULL,
     first_name VARCHAR(MAX),
     last_name VARCHAR(MAX),
 	email VARCHAR(MAX)
 );
 
-INSERT INTO customer (id, first_name, last_name, email)
+INSERT INTO customer (first_name, last_name, email)
   VALUES
-      (1, 'Rara','Baba','rara@test.com');
+      ('Rara','Baba','rara@test.com');
 
-INSERT INTO customer (id, first_name, last_name, email)
+INSERT INTO customer (first_name, last_name, email)
   VALUES
-      (2, 'Kaka','Sasa','kaka@test.com');
+      ('Kaka','Sasa','kaka@test.com');
 
-INSERT INTO customer (id, first_name, last_name, email)
+INSERT INTO customer (first_name, last_name, email)
   VALUES
-      (3, 'Mama','Lala','mama@test.com');
+      ('Mama','Lala','mama@test.com');
