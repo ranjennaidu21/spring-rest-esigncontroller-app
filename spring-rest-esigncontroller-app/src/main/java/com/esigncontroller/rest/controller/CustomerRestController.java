@@ -3,12 +3,17 @@ package com.esigncontroller.rest.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -40,19 +45,22 @@ see a 401 error
 @RestController
 @RequestMapping("/api")
 public class CustomerRestController {
+	
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	// autowire the CustomerService
 	@Autowired
 	//private CustomerService customerService;
 	private CustomerRepository customerRepository;
 	
-	@RequestMapping( "/item" )
+	//@RequestMapping( "/item" )
+	@GetMapping("/item")
 	public String getStockItem() {
 		return "It's working...!";
 	}
 	
 	// add mapping for GET /customers
-	@RequestMapping(value = "/customers/", method = RequestMethod.GET)
+	@GetMapping("/customers/")
 	public List<Customer> getCustomers() {
 		
 		//return customerService.getCustomers();
@@ -62,7 +70,7 @@ public class CustomerRestController {
 
 	
 	// add mapping for GET /customers/{customerId}
-	@RequestMapping(value = "/customers/{customerId}", method = RequestMethod.GET)
+	@GetMapping("/customers/{customerId}")
 	//the pathvariable need to be same as variable name inside the bracket above
 	public Optional<Customer> getCustomer(@PathVariable int customerId) {
 		
@@ -90,8 +98,7 @@ public class CustomerRestController {
 		"email" : "ranjennaidu@test.com"
 	}
 	*/
-	//@PostMapping("/customers")
-	@RequestMapping(value = "/customers", method = RequestMethod.POST)
+	@PostMapping("/customers")
 	//now we can access the requestbody as POJO
 	public Customer addCustomer(@RequestBody Customer theCustomer) {
 		
@@ -120,16 +127,24 @@ public class CustomerRestController {
 	    "lastName": "Karikalan",
 	    "email": "k_kala@test.com"
 	}
-	
-	@PutMapping("/customers")
-	public Customer updateCustomer(@RequestBody Customer theCustomer) {
+	*/
+	@PutMapping("/customers/{customerId}")
+	public Customer updateCustomerById(@PathVariable int customerId) {
 		
 		//since customer id is set, DAO will update customer in the database
-		customerService.saveCustomer(theCustomer);
+		//updating to do
+		//To update firstname as "Kaala" and lastname as "Babu" for id 4
+		Optional<Customer> customer = customerRepository.findById(customerId);
+		Customer customerEntity = customer.get();
+		customerEntity.setFirstName("Kaala");
+		customerEntity.setLastName("Babu");
+		logger.info("Updated for id {} -> {}", 
+				customerId,customerRepository.save(customerEntity));
 		
-		return theCustomer;
+		return customerEntity;
 		
 	}
+	
 	
 	// add mapping for DELETE /customers/{customerId} - delete customer
 	//TO TEST: Use POSTMAN , choose DELETE , paste the/customers/8 url to delete customer
@@ -139,7 +154,7 @@ public class CustomerRestController {
 	@DeleteMapping("/customers/{customerId}")
 	public String deleteCustomer(@PathVariable int customerId) {
 		
-		Customer tempCustomer = customerService.getCustomer(customerId);
+		Optional<Customer> tempCustomer = customerRepository.findById(customerId);
 		
 		// throw exception if Customer is null
 		
@@ -147,10 +162,10 @@ public class CustomerRestController {
 			throw new CustomerNotFoundException("Customer id not found - " + customerId);
 		}
 				
-		customerService.deleteCustomer(customerId);
+		customerRepository.deleteById(customerId);
 		
 		return "Deleted customer id - " + customerId;
-	}*/
+	}
 	
 
 	
