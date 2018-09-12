@@ -1,4 +1,4 @@
-package com.esigncontroller.rest.entity;
+package com.esigncontroller.rest.weather.entity;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -9,6 +9,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 public class WeatherEntry implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private Instant timestamp;
 

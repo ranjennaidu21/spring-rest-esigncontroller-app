@@ -1,4 +1,4 @@
-package com.esigncontroller.rest.error.response;
+package com.esigncontroller.rest.db.error.response;
 
 public class CustomerErrorResponse {
 

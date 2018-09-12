@@ -1,4 +1,4 @@
-package com.esigncontroller.rest.entity;
+package com.esigncontroller.rest.db.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

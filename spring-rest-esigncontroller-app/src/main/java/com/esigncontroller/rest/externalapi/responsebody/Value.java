@@ -1,4 +1,4 @@
-package com.esigncontroller.rest.responsebody;
+package com.esigncontroller.rest.externalapi.responsebody;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

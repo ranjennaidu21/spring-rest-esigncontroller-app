@@ -1,4 +1,4 @@
-package com.esigncontroller.rest.error.exception;
+package com.esigncontroller.rest.db.error.exception;
 
 public class CustomerNotFoundException extends RuntimeException {
 

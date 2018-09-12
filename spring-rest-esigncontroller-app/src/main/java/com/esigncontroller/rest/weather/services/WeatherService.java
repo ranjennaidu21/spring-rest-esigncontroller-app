@@ -1,4 +1,4 @@
-package com.esigncontroller.rest.services;
+package com.esigncontroller.rest.weather.services;
 
 import java.net.URI;
 
@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriTemplate;
 
-import com.esigncontroller.rest.entity.Weather;
-import com.esigncontroller.rest.properties.WeatherAppProperties;
+import com.esigncontroller.rest.weather.entity.Weather;
+import com.esigncontroller.rest.weather.properties.WeatherAppProperties;
 
 @Service
 public class WeatherService {

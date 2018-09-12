@@ -1,12 +1,12 @@
-package com.esigncontroller.rest.error.exceptionhandler;
+package com.esigncontroller.rest.db.error.exceptionhandler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.esigncontroller.rest.error.exception.CustomerNotFoundException;
-import com.esigncontroller.rest.error.response.CustomerErrorResponse;
+import com.esigncontroller.rest.db.error.exception.CustomerNotFoundException;
+import com.esigncontroller.rest.db.error.response.CustomerErrorResponse;
 
 @ControllerAdvice
 public class CustomerRestExceptionHandler {

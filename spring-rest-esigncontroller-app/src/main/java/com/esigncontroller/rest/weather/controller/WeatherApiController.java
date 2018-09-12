@@ -1,4 +1,4 @@
-package com.esigncontroller.rest.controller;
+package com.esigncontroller.rest.weather.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.esigncontroller.rest.entity.Weather;
-import com.esigncontroller.rest.services.WeatherService;
+import com.esigncontroller.rest.weather.entity.Weather;
+import com.esigncontroller.rest.weather.services.WeatherService;
 
 @RestController
 @RequestMapping("/api/weather")

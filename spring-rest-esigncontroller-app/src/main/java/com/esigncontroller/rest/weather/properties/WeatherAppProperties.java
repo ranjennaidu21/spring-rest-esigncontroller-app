@@ -1,4 +1,4 @@
-package com.esigncontroller.rest.properties;
+package com.esigncontroller.rest.weather.properties;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
