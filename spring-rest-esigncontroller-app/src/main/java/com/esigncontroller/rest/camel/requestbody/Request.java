@@ -11,7 +11,7 @@ import lombok.Data;
 public class Request
 {
     @Size(min = 5,max = 10)
-    String message;
+    private String message;
 
 	public String getMessage() {
 		return message;

@@ -3,9 +3,9 @@ package com.esigncontroller.rest.camel.responsebody;
 import lombok.Data;
 
 @Data
-class Response
+public class Response
 {
-    String message;
+    private String message;
 
 	public String getMessage() {
 		return message;
@@ -14,6 +14,5 @@ class Response
 	public void setMessage(String message) {
 		this.message = message;
 	}
-    
     
 }

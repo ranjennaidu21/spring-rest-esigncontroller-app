@@ -5,10 +5,12 @@ import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.springframework.stereotype.Component;
 
+import com.esigncontroller.rest.camel.processor.CustomerProcessor;
 import com.esigncontroller.rest.camel.processor.GreetingProcessor;
+import com.esigncontroller.rest.camel.processor.WeatherProcessor;
 
 @Component
-public class HelloWorldRoute extends RouteBuilder {
+public class CamelRoute extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
@@ -37,5 +39,33 @@ public class HelloWorldRoute extends RouteBuilder {
             from("direct:secondroute")
                     .to("log:INFO:: Hello ${body}")
                     .end();
+            
+            from("direct:customer")
+            .routeId("direct:customer")
+            .doTry()
+                .to("log:INFO?showBody=true&showHeaders=true")
+                //.convertBodyTo(String.class)
+                .log("===>doTry :: ${body}")
+                .process(new CustomerProcessor())
+            .log("===>end doTry :: ${body}")
+            .doCatch(Exception.class)
+                .to("log:INFO?showBody=true&showHeaders=true")
+                .convertBodyTo(String.class)
+                .log("===>catch error :: ${body}")
+            .end();
+            
+            from("direct:weather")
+            .routeId("direct:weather")
+            .doTry()
+                .to("log:INFO?showBody=true&showHeaders=true")
+                //.convertBodyTo(String.class)
+                .log("===>doTry :: ${body}")
+                .process(new WeatherProcessor())
+            .log("===>end doTry :: ${body}")
+            .doCatch(Exception.class)
+                .to("log:INFO?showBody=true&showHeaders=true")
+                .convertBodyTo(String.class)
+                .log("===>catch error :: ${body}")
+            .end();
     }
 }
