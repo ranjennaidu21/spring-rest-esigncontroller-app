@@ -22,9 +22,9 @@ import com.esigncontroller.rest.camel.responsebody.WeatherResponse;
 public class WeatherApiService {
 	
 	//test by sending REST request to 
-	//eg:http://localhost:8080/weather/London/US
-	//eg:http://localhost:8080/weather/London/UK
-	//eg:http://localhost:8080/weather/Moscow/Russia
+	//eg:https://localhost:8443/weather/London/US
+	//eg:https://localhost:8443/weather/London/UK
+	//eg:https://localhost:8443/weather/Moscow/Russia
 	
     @Produce
     private ProducerTemplate template;
@@ -58,7 +58,7 @@ public class WeatherApiService {
 	}
 
 /*	Eg:Send POST method to this URL
-	http://localhost:8080/weather/UK
+	https://localhost:8443/weather/UK
 */	
 	@PostMapping(value="/{country}",headers = "Accept=application/json", produces = "application/json")
 	public WeatherResponse getWeatherResponseByCountry(@PathVariable String country) {
@@ -75,7 +75,7 @@ public class WeatherApiService {
 	}
 	
 /*	Eg:Send POST method to this URL
-	http://localhost:8080/weather/UK/LONDON
+	https://localhost:8443/weather/UK/LONDON
 */	
 	@PostMapping(value="/{country}/{city}",headers = "Accept=application/json", produces = "application/json")
 	public WeatherResponse getWeatherResponseByCountryAndCity(@PathVariable String country,@PathVariable String city) {

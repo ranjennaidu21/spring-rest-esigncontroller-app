@@ -16,6 +16,8 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+//SSL Enabled : access via: eg:https://localhost:8443/
+	
 @RestController
 @RequestMapping("/customer")
 public class CustomerRestService {
