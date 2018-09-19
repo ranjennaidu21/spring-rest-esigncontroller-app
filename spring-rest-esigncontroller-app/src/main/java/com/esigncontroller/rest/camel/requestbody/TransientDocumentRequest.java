@@ -8,6 +8,7 @@ public class TransientDocumentRequest
     private String fileName;
     private String mimeType;
     private String fileToBeUploaded;
+
 	public String getFileName() {
 		return fileName;
 	}
@@ -31,8 +32,5 @@ public class TransientDocumentRequest
 		return "TransientDocumentRequest [fileName=" + fileName + ", mimeType=" + mimeType + ", fileToBeUploaded="
 				+ fileToBeUploaded + "]";
 	}
-
-    
-    
 
 }

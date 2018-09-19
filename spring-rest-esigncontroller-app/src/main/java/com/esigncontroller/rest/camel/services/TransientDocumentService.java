@@ -21,30 +21,26 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import com.esigncontroller.rest.camel.requestbody.TransientDocumentRequest;
 import com.esigncontroller.rest.camel.responsebody.TransientDocumentResponse;
+import com.esigncontroller.rest.camel.util.GlobalConstants;
 
 
 
 @RestController
-public class RestApiAgreementsService {
-	
-/*	@Autowired
-	static
-	BaseUriService baseUriService;*/
+public class TransientDocumentService {
 
     @Produce
     private ProducerTemplate template;
     
-    private static final Logger logger = LoggerFactory.getLogger(RestApiAgreementsService.class);
+    private static final Logger logger = LoggerFactory.getLogger(TransientDocumentService.class);
     
     private static final String TRANSIENT_DOCUMENTS_ENDPOINT = "/transientDocuments";
     
-    public final static String ACCESSTOKEN = "3AAABLblqZhDvpt8EOChGRESfAgNug7PFYoq2IQiMlU5NRVmvPNvqwuWiF6Xia4YG5EdDz5D3YJ4XBf3jPXewLhj4UeS9aNyE";
+    public final static String API_ACCESS_POINT = "https://api.eu1.echosign.com";
     
-    public final static String BASEURIURL = "https://api.na2.echosign.com:443/api/rest/v5/base_uris";
+    public final static String REST_API_VERSION = "/api/rest/v6";
     
-    //public final static String POSTTRANSIENTDOCUMENTSURL  = baseUriService.getBaseURIForAPI() + TRANSIENT_DOCUMENTS_ENDPOINT;
-    public final static String POSTTRANSIENTDOCUMENTSURL  = "https://api.na2.echosign.com/api/rest/v5" + TRANSIENT_DOCUMENTS_ENDPOINT;
-    
+    public final static String POSTTRANSIENTDOCUMENTSURL = API_ACCESS_POINT + REST_API_VERSION + TRANSIENT_DOCUMENTS_ENDPOINT;
+
     public final static String REQUEST_PATH = "com/esigncontroller/rest/camel/documents/";
     
     @PostMapping("/transientDocuments")
@@ -52,7 +48,7 @@ public class RestApiAgreementsService {
 
     	// Create header list for the request.
     	HttpHeaders headers = new HttpHeaders();
-        headers.set("Access-Token", ACCESSTOKEN);
+        headers.set("Authorization", GlobalConstants.ACCESS_TOKEN);
         headers.set("accept","application/json");
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 

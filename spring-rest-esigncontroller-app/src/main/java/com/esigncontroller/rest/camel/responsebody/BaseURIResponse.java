@@ -5,24 +5,26 @@ import lombok.Data;
 @Data
 public class BaseURIResponse
 {
-    private String api_access_point;
-    private String web_access_point;
+    private String apiAccessPoint;
+    private String webAccessPoint;
     
-	public String getApi_access_point() {
-		return api_access_point;
+	public String getApiAccessPoint() {
+		return apiAccessPoint;
 	}
-	public void setApi_access_point(String api_access_point) {
-		this.api_access_point = api_access_point;
+	public void setApiAccessPoint(String apiAccessPoint) {
+		this.apiAccessPoint = apiAccessPoint;
 	}
-	public String getWeb_access_point() {
-		return web_access_point;
+	public String getWebAccessPoint() {
+		return webAccessPoint;
 	}
-	public void setWeb_access_point(String web_access_point) {
-		this.web_access_point = web_access_point;
+	public void setWebAccessPoint(String webAccessPoint) {
+		this.webAccessPoint = webAccessPoint;
 	}
 	@Override
 	public String toString() {
-		return "BaseURIResponse [api_access_point=" + api_access_point + ", web_access_point=" + web_access_point + "]";
+		return "BaseURIResponse [apiAccessPoint=" + apiAccessPoint + ", webAccessPoint=" + webAccessPoint + "]";
 	}
+    
+    
 
 }
