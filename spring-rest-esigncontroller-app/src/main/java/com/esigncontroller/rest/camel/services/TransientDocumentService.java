@@ -34,12 +34,8 @@ public class TransientDocumentService {
     private static final Logger logger = LoggerFactory.getLogger(TransientDocumentService.class);
     
     private static final String TRANSIENT_DOCUMENTS_ENDPOINT = "/transientDocuments";
-    
-    public final static String API_ACCESS_POINT = "https://api.eu1.echosign.com";
-    
-    public final static String REST_API_VERSION = "/api/rest/v6";
-    
-    public final static String POSTTRANSIENTDOCUMENTSURL = API_ACCESS_POINT + REST_API_VERSION + TRANSIENT_DOCUMENTS_ENDPOINT;
+
+    public final static String POSTTRANSIENTDOCUMENTSURL = GlobalConstants.API_ACCESS_POINT + GlobalConstants.REST_API_VERSION + TRANSIENT_DOCUMENTS_ENDPOINT;
 
     public final static String REQUEST_PATH = "com/esigncontroller/rest/camel/documents/";
     

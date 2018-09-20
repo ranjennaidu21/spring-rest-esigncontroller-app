@@ -17,11 +17,14 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.esigncontroller.rest.camel.responsebody.AgreementByIdResponse;
+import com.esigncontroller.rest.camel.responsebody.DeleteAgreementDocResponse;
 import com.esigncontroller.rest.camel.responsebody.DocumentListResponse;
 import com.esigncontroller.rest.camel.responsebody.UserAgreementListResponse;
 import com.esigncontroller.rest.camel.util.GlobalConstants;
@@ -43,19 +46,21 @@ public class AgreementService {
     
     private static final String GET_AGREEMENTS_ENDPOINT = "/agreements";
     
+    private static final String GET_AGREEMENTBYID_ENDPOINT = "/agreements/{agreementId}";
+    
     private static final String GET_DOCID_ENDPOINT = "/agreements/{agreementId}/documents";
     
     private static final String GET_DOCFILESTREAM_ENDPOINT = "/agreements/{agreementId}/documents/{documentId}";
     
-    public final static String API_ACCESS_POINT = "https://api.eu1.echosign.com";
-    
-    public final static String REST_API_VERSION = "/api/rest/v6";
-    
-    public final static String GET_AGREEMENTS_URL = API_ACCESS_POINT + REST_API_VERSION + GET_AGREEMENTS_ENDPOINT;
+    public final static String GET_AGREEMENTS_URL = GlobalConstants.API_ACCESS_POINT + GlobalConstants.REST_API_VERSION + GET_AGREEMENTS_ENDPOINT;
 
-    public final static String GET_DOCID_OF_AGREEMENT_URL = API_ACCESS_POINT + REST_API_VERSION + GET_DOCID_ENDPOINT;
+    public final static String GET_AGREEMENTBYID_URL = GlobalConstants.API_ACCESS_POINT + GlobalConstants.REST_API_VERSION + GET_AGREEMENTBYID_ENDPOINT;
     
-    public final static String GET_DOCFILESTREAM_OF_AGREEMENT_URL = API_ACCESS_POINT + REST_API_VERSION + GET_DOCFILESTREAM_ENDPOINT;
+    public final static String GET_DOCID_OF_AGREEMENT_URL = GlobalConstants.API_ACCESS_POINT + GlobalConstants.REST_API_VERSION + GET_DOCID_ENDPOINT;
+    
+    public final static String GET_DOCFILESTREAM_OF_AGREEMENT_URL = GlobalConstants.API_ACCESS_POINT + GlobalConstants.REST_API_VERSION + GET_DOCFILESTREAM_ENDPOINT;
+    
+    public final static String DELETE_DOC_OF_AGREEMENT_URL = GlobalConstants.API_ACCESS_POINT + GlobalConstants.REST_API_VERSION + GET_DOCID_ENDPOINT;
     
     public final static String REQUEST_PATH = "com/esigncontroller/rest/camel/documents/";
       
@@ -128,5 +133,53 @@ public class AgreementService {
         ResponseEntity<byte[]> response = restTemplate.exchange(GET_DOCFILESTREAM_OF_AGREEMENT_URL, HttpMethod.GET, entity, byte[].class,params);
 	    return response;
     }
- 
+    
+    //Retrieve agreement details as per id to get the ETAG value
+    @GetMapping("/agreements/{agreementId}")
+    public AgreementByIdResponse getAgreementById(@PathVariable String agreementId){
+		RestTemplate restTemplate = new RestTemplate();
+    	// Create header list for the request.
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.set("Authorization", GlobalConstants.ACCESS_TOKEN);
+
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("agreementId", agreementId);
+		
+        HttpEntity<String> entity = new HttpEntity<String>(headers);
+        ResponseEntity<AgreementByIdResponse> response = restTemplate.exchange(GET_AGREEMENTBYID_URL, HttpMethod.GET, entity, AgreementByIdResponse.class,params);
+        
+        HttpHeaders responseHeaders = response.getHeaders();
+		response.getBody().seteTag(responseHeaders.getFirst("ETag"));
+        System.out.println(response.getBody());
+		logger.info(response.getBody().toString());
+		
+	    return response.getBody();
+    }
+    
+    //TO DO : DELETE /agreements/{agreementId}/documents >> Deletes all the documents of an agreement
+    //TEST URL: https://localhost:8443/agreements/CBJCHBCAABAAvs3vXL0B5LGZGN-U5emdtQ38uNNq6vUV/documents/432ABA253823BBC32B5381BA24CE43.4D54FA57C93BA83731352917FEF5A82
+    @DeleteMapping("/agreements/{agreementId}/documents/{eTag}")
+    public DeleteAgreementDocResponse deleteAllDocOfAgreement(@PathVariable String agreementId,@PathVariable String eTag){
+    	
+		RestTemplate restTemplate = new RestTemplate();
+    	// Create header list for the request.
+		HttpHeaders headers = new HttpHeaders();
+		//headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.set("Authorization", GlobalConstants.ACCESS_TOKEN);
+		//This is ETAG Value need to be sent by user after received from the getAgreementById endpoint above.
+		//eg: for agreement id->CBJCHBCAABAAvs3vXL0B5LGZGN-U5emdtQ38uNNq6vUV
+		//ETAG value is A432ABA253823BBC32B5381BA24CE43.4D54FA57C93BA83731352917FEF5A82
+		headers.set("If-Match", eTag);
+
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("agreementId", agreementId);
+		
+        HttpEntity<String> entity = new HttpEntity<String>(headers);
+        ResponseEntity<DeleteAgreementDocResponse> response = restTemplate.exchange(DELETE_DOC_OF_AGREEMENT_URL, HttpMethod.DELETE, entity, DeleteAgreementDocResponse.class,params);
+        System.out.println(response.getBody());
+		logger.info(response.getBody().toString());
+		
+	    return response.getBody();
+    }
 }

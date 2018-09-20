@@ -1,20 +1,44 @@
 package com.esigncontroller.rest.camel.route;
-
-import org.apache.camel.Exchange;
-import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.springframework.stereotype.Component;
 
-import com.esigncontroller.rest.camel.processor.CustomerProcessor;
-import com.esigncontroller.rest.camel.processor.GreetingProcessor;
-import com.esigncontroller.rest.camel.processor.WeatherProcessor;
 
 @Component
 public class CamelRoute extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
-            from("direct:hello")
+
+/*    	restConfiguration().component("jetty")
+        .bindingMode(RestBindingMode.json)
+        .dataFormatProperty("prettyPrint", "true")
+        .port(8443);
+    	
+        rest().description("Base URI Service")
+        .consumes("application/json").produces("application/json")
+
+        .get("/base_uris").description("Find user by id").outType(String.class)
+        .to("log:INFO?showBody=true&showHeaders=true");*/
+    		
+        /*from("direct:baseuri")
+        .routeId("direct:baseuri")
+        .doTry()
+            .to("log:INFO?showBody=true&showHeaders=true")
+            //.convertBodyTo(String.class)
+            .log("===>doTry :: ${body}")
+            .process(new WeatherProcessor())
+        .log("===>end doTry :: ${body}")
+        .doCatch(Exception.class)
+            .to("log:INFO?showBody=true&showHeaders=true")
+            .convertBodyTo(String.class)
+            .log("===>catch error :: ${body}")
+        .end();
+        
+    		rest()
+    		.get("/base_uris")
+    		.to("log:INFO?showBody=true&showHeaders=true")
+            .to("log:INFO:: ${body}");*/
+/*            from("direct:hello")
                     .routeId("direct:hello")
                     .doTry()
                         .to("log:INFO?showBody=true&showHeaders=true")
@@ -66,6 +90,6 @@ public class CamelRoute extends RouteBuilder {
                 .to("log:INFO?showBody=true&showHeaders=true")
                 .convertBodyTo(String.class)
                 .log("===>catch error :: ${body}")
-            .end();
+            .end();*/
     }
 }

@@ -1,5 +1,6 @@
 package com.esigncontroller.rest.camel.services;
 
+import org.apache.camel.ExchangePattern;
 import org.apache.camel.Produce;
 import org.apache.camel.ProducerTemplate;
 import org.slf4j.Logger;
@@ -12,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+
+import com.esigncontroller.rest.camel.requestbody.WeatherRequest;
 import com.esigncontroller.rest.camel.responsebody.BaseURIResponse;
 import com.esigncontroller.rest.camel.util.GlobalConstants;
 
@@ -35,7 +38,7 @@ public class BaseUriService {
         ResponseEntity<BaseURIResponse> response = restTemplate.exchange(URL, HttpMethod.GET, entity, BaseURIResponse.class);        
         System.out.println(response.getBody());
 		logger.info(response.getBody().toString());
-	    String apiAccessPoint = (String) response.getBody().getApiAccessPoint() + "api/rest/v6";
+	    String apiAccessPoint = (String) response.getBody().getApiAccessPoint();
 	    logger.info("Base URI : " + apiAccessPoint);
 	    return apiAccessPoint;
 	}
