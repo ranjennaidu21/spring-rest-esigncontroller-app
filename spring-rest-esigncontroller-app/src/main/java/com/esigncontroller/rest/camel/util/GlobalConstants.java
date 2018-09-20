@@ -9,5 +9,5 @@ public class GlobalConstants {
 	
 	//need to find a way to generate this access token which is active for 5 minutes and store the value here.
 	//need to refresh for every 5 minutes
-	public static final String ACCESS_TOKEN  = "Bearer 3AAABLblqZhA56d6ehVClyMDBcK8dZRysXO-u5bdKFn2ueppCrZtE8PTXnnRqJpmyGXTwAZzBM2ghTYD-gD7NTI-IeIJAn_Ce";
+	public static final String ACCESS_TOKEN  = "Bearer 3AAABLblqZhDAJeYlO4yesgdrtQQZwKza_RUwFAj9wTNB2NdvK3esB_k34tdTE9xxkldNmhi6iF2TMPylV-bYbwHVhWOqDhO_";
 }
