@@ -44,8 +44,9 @@ public class ScheduledTasks {
 	private static final String IP_ADDRESS = "https://localhost:8443";
 
 	/* <second> <minute> <hour> <day-of-month> <month> <day-of-week> */
-	/* every hour 0 0 * ? * **/
-	@Scheduled(cron = "0/10 * * * * *")
+	/* every hour 0 0 * ? * *       */
+	/*to test every 10sec 0/10 * * * * **/
+	@Scheduled(cron = "0 0 * ? * *")
 	public void scheduleTaskWithCronExpression() throws KeyManagementException, NoSuchAlgorithmException {
 		SSLUtil.turnOffSslChecking();
 		logger.info("Cron Task :: Execution Time - {}", dateTimeFormatter.format(LocalDateTime.now()));
