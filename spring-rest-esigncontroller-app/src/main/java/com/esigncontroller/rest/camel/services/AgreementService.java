@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
@@ -160,7 +161,7 @@ public class AgreementService {
     //TO DO : DELETE /agreements/{agreementId}/documents >> Deletes all the documents of an agreement
     //TEST URL: https://localhost:8443/agreements/CBJCHBCAABAAvs3vXL0B5LGZGN-U5emdtQ38uNNq6vUV/documents/432ABA253823BBC32B5381BA24CE43.4D54FA57C93BA83731352917FEF5A82
     @DeleteMapping("/agreements/{agreementId}/documents/{eTag}")
-    public DeleteAgreementDocResponse deleteAllDocOfAgreement(@PathVariable String agreementId,@PathVariable String eTag){
+    public HttpStatus deleteAllDocOfAgreement(@PathVariable String agreementId,@PathVariable String eTag){
     	
 		RestTemplate restTemplate = new RestTemplate();
     	// Create header list for the request.
@@ -176,10 +177,12 @@ public class AgreementService {
 		params.put("agreementId", agreementId);
 		
         HttpEntity<String> entity = new HttpEntity<String>(headers);
-        ResponseEntity<DeleteAgreementDocResponse> response = restTemplate.exchange(DELETE_DOC_OF_AGREEMENT_URL, HttpMethod.DELETE, entity, DeleteAgreementDocResponse.class,params);
-        System.out.println(response.getBody());
+        ResponseEntity<String> response = restTemplate.exchange(DELETE_DOC_OF_AGREEMENT_URL, HttpMethod.DELETE, entity, String.class,params);
+        HttpStatus statusCode = response.getStatusCode();
+        return statusCode;
+/*        System.out.println(response.getBody());
 		logger.info(response.getBody().toString());
 		
-	    return response.getBody();
+	    return response.getBody();*/
     }
 }

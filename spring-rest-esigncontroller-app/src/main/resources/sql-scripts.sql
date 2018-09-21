@@ -1,24 +1,25 @@
-CREATE TABLE customer(
+CREATE TABLE outbound(
     id INT IDENTITY (1, 1) NOT NULL,
-    first_name VARCHAR(MAX),
-    last_name VARCHAR(MAX),
-	email VARCHAR(MAX)
+    agreemendid VARCHAR(MAX),
+    referenceno VARCHAR(MAX),
+	accesstoken VARCHAR(MAX),
+	outboundstatus VARCHAR(MAX),
 );
 
-CREATE TABLE users (
-    user_id BIGINT IDENTITY (1, 1) NOT NULL PRIMARY KEY,
-    username VARCHAR(450),
-    password VARCHAR(MAX),
-    enabled BIT,
-	CONSTRAINT AK_Username UNIQUE(username)
+CREATE TABLE inbound(
+    id INT IDENTITY (1, 1) NOT NULL,
+    agreementid VARCHAR(MAX),
+    targetdir VARCHAR(MAX),
+	inboundstatus VARCHAR(MAX),
+	documentid VARCHAR(MAX),
 );
 
-INSERT INTO customer (first_name, last_name, email) VALUES
-('Rara','Baba','rara@test.com'),
-('Kaka','Sasa','kaka@test.com'),
-('Mama','Lala','mama@test.com');
+INSERT INTO outbound (agreemendid, referenceno, accesstoken,outboundstatus) VALUES
+('CBJCHBCAABAA1x42SqE_n8PF7p46Fudv3YqE7NnaKsXW','1','token1','OUT_FOR_SIGNATURE'),
+('CBJCHBCAABAA8fyxJzvoc0O2Se3_xwLxlICIA2XSnMxo','2','token2','OUT_FOR_SIGNATURE'),
+('CBJCHBCAABAAM59-oKFi4pTr36ugsPqJmpdN35QAi8oY','3','token3','OUT_FOR_SIGNATURE'),
+('CBJCHBCAABAAvDgqfcehfuileR2nDsbdK5u4_89-tctx','4','token4','ARCHIVED'),
+('CBJCHBCAABAAFu7runqkh6Ucwq_wc860KjkYuYpsnuZ1','5','token5','ARCHIVED'),
+('CBJCHBCAABAAhVgj5fptlNyYy8r4x8Sz6DN-dN7BE7NR','6','token6','OUT_FOR_SIGNATURE'),
+('CBJCHBCAABAASi9WSAtVrxHwutYTePMlhJKk9S4uUNAY','7','token7','OUT_FOR_SIGNATURE');
 
-INSERT INTO users (username, password, enabled) VALUES 
-	('user1@test.com', 'user1', 1),
-	('user2@test.com', 'user2', 1),
-	('user3@test.com', 'user3', 1);
