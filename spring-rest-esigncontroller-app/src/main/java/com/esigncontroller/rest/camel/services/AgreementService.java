@@ -48,7 +48,7 @@ public class AgreementService {
 	private String IntegrationKey;
 	
 	@Value("${api.access.point}")
-	private static String apiAccessPoint;
+	private String apiAccessPoint;
     
     private static final Logger logger = LoggerFactory.getLogger(AgreementService.class);
     
@@ -60,15 +60,15 @@ public class AgreementService {
     
     private static final String GET_DOCFILESTREAM_ENDPOINT = "/agreements/{agreementId}/documents/{documentId}";
     
-    public final static String GET_AGREEMENTS_URL = apiAccessPoint + GlobalConstants.REST_API_VERSION + GET_AGREEMENTS_ENDPOINT;
+    public final static String GET_AGREEMENTS_URL = GlobalConstants.REST_API_VERSION + GET_AGREEMENTS_ENDPOINT;
 
-    public final static String GET_AGREEMENTBYID_URL = apiAccessPoint + GlobalConstants.REST_API_VERSION + GET_AGREEMENTBYID_ENDPOINT;
+    public final static String GET_AGREEMENTBYID_URL = GlobalConstants.REST_API_VERSION + GET_AGREEMENTBYID_ENDPOINT;
     
-    public final static String GET_DOCID_OF_AGREEMENT_URL = apiAccessPoint + GlobalConstants.REST_API_VERSION + GET_DOCID_ENDPOINT;
+    public final static String GET_DOCID_OF_AGREEMENT_URL = GlobalConstants.REST_API_VERSION + GET_DOCID_ENDPOINT;
     
-    public final static String GET_DOCFILESTREAM_OF_AGREEMENT_URL = apiAccessPoint + GlobalConstants.REST_API_VERSION + GET_DOCFILESTREAM_ENDPOINT;
+    public final static String GET_DOCFILESTREAM_OF_AGREEMENT_URL = GlobalConstants.REST_API_VERSION + GET_DOCFILESTREAM_ENDPOINT;
     
-    public final static String DELETE_DOC_OF_AGREEMENT_URL = apiAccessPoint + GlobalConstants.REST_API_VERSION + GET_DOCID_ENDPOINT;
+    public final static String DELETE_DOC_OF_AGREEMENT_URL = GlobalConstants.REST_API_VERSION + GET_DOCID_ENDPOINT;
     
     public final static String REQUEST_PATH = "com/esigncontroller/rest/camel/documents/";
     
@@ -101,7 +101,7 @@ public class AgreementService {
 		headers.set("Authorization", IntegrationKey);
 
         HttpEntity<String> entity = new HttpEntity<String>(headers);
-        ResponseEntity<UserAgreementListResponse> response = restTemplate.exchange(GET_AGREEMENTS_URL, HttpMethod.GET, entity, UserAgreementListResponse.class);
+        ResponseEntity<UserAgreementListResponse> response = restTemplate.exchange(apiAccessPoint + GET_AGREEMENTS_URL, HttpMethod.GET, entity, UserAgreementListResponse.class);
         
         System.out.println(response.getBody());
 		logger.info(response.getBody().toString());
@@ -121,7 +121,7 @@ public class AgreementService {
 		params.put("agreementId", agreementId);
 		
         HttpEntity<String> entity = new HttpEntity<String>(headers);
-        ResponseEntity<AgreementByIdResponse> response = restTemplate.exchange(GET_AGREEMENTBYID_URL, HttpMethod.GET, entity, AgreementByIdResponse.class,params);
+        ResponseEntity<AgreementByIdResponse> response = restTemplate.exchange(apiAccessPoint + GET_AGREEMENTBYID_URL, HttpMethod.GET, entity, AgreementByIdResponse.class,params);
 
         System.out.println(response.getBody());
 		logger.info(response.getBody().toString());
@@ -143,7 +143,7 @@ public class AgreementService {
 		params.put("agreementId", agreementId);
 		
         HttpEntity<String> entity = new HttpEntity<String>(headers);
-        ResponseEntity<DocumentListResponse> response = restTemplate.exchange(GET_DOCID_OF_AGREEMENT_URL, HttpMethod.GET, entity, DocumentListResponse.class,params);
+        ResponseEntity<DocumentListResponse> response = restTemplate.exchange(apiAccessPoint + GET_DOCID_OF_AGREEMENT_URL, HttpMethod.GET, entity, DocumentListResponse.class,params);
         HttpHeaders responseHeaders = response.getHeaders();
 		response.getBody().getDocuments().get(0).seteTag(responseHeaders.getFirst("ETag"));
 		
@@ -179,7 +179,7 @@ public class AgreementService {
 		params.put("documentId", documentId);
 		
         HttpEntity<String> entity = new HttpEntity<String>(headers);
-        ResponseEntity<byte[]> response = restTemplate.exchange(GET_DOCFILESTREAM_OF_AGREEMENT_URL, HttpMethod.GET, entity, byte[].class,params);
+        ResponseEntity<byte[]> response = restTemplate.exchange(apiAccessPoint + GET_DOCFILESTREAM_OF_AGREEMENT_URL, HttpMethod.GET, entity, byte[].class,params);
 	    return response;
     }
     
@@ -203,7 +203,7 @@ public class AgreementService {
 		params.put("agreementId", agreementId);
 		
         HttpEntity<String> entity = new HttpEntity<String>(headers);
-        ResponseEntity<String> response = restTemplate.exchange(DELETE_DOC_OF_AGREEMENT_URL, HttpMethod.DELETE, entity, String.class,params);
+        ResponseEntity<String> response = restTemplate.exchange(apiAccessPoint + DELETE_DOC_OF_AGREEMENT_URL, HttpMethod.DELETE, entity, String.class,params);
         HttpStatus statusCode = response.getStatusCode();
         return statusCode;
     }

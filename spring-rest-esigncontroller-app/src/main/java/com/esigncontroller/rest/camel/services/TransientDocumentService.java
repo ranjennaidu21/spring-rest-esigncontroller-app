@@ -36,13 +36,13 @@ public class TransientDocumentService {
 	private String IntegrationKey;
 	
 	@Value("${api.access.point}")
-	private static String apiAccessPoint;
+	private String apiAccessPoint;
     
     private static final Logger logger = LoggerFactory.getLogger(TransientDocumentService.class);
     
     private static final String TRANSIENT_DOCUMENTS_ENDPOINT = "/transientDocuments";
 
-    public final static String POSTTRANSIENTDOCUMENTSURL = apiAccessPoint + GlobalConstants.REST_API_VERSION + TRANSIENT_DOCUMENTS_ENDPOINT;
+    public final static String POSTTRANSIENTDOCUMENTSURL = GlobalConstants.REST_API_VERSION + TRANSIENT_DOCUMENTS_ENDPOINT;
 
     public final static String REQUEST_PATH = "com/esigncontroller/rest/camel/documents/";
     
@@ -70,7 +70,7 @@ public class TransientDocumentService {
     	body.add("File", fileToUpload);
     	
     	HttpEntity<MultiValueMap<String, Object>> entity = new HttpEntity<>(body, headers);    
-        ResponseEntity<TransientDocumentResponse> response = restTemplate.exchange(POSTTRANSIENTDOCUMENTSURL, HttpMethod.POST, entity, TransientDocumentResponse.class);  
+        ResponseEntity<TransientDocumentResponse> response = restTemplate.exchange(apiAccessPoint + POSTTRANSIENTDOCUMENTSURL, HttpMethod.POST, entity, TransientDocumentResponse.class);  
         System.out.println(response.getBody());
 		logger.info(response.getBody().toString());
 		
