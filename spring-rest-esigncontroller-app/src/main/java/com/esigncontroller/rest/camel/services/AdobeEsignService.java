@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
-@RequestMapping("/oauth")
 public class AdobeEsignService {
 	
     @Produce
@@ -54,8 +53,8 @@ public class AdobeEsignService {
 	}
 
 	//1) First execute the following url in browser to get the AuthorizationToken
-	//https://secure.na2.echosign.com/public/oauth?redirect_uri=https://localhost:8443/oauth/test&response_type=code&client_id=CBJCHBCAABAAxaDkAU93ynVnvNDZ7H4pG8AZLq26Ws1L&scope=user_login:self+agreement_write:account&state=testing
-	@GetMapping("/test")
+	//https://secure.eu1.echosign.com/public/oauth?redirect_uri=https://localhost:8443/public/oauth&response_type=code&client_id=CBJCHBCAABAATbPXDJdtaYYvjMjjh7ncQ0t_Ch8n4Z9o&scope=user_login:self+agreement_write:self&state=testing
+	@GetMapping("/public/oauth")
 	public String getAuthorizationTokenDetails(HttpServletRequest request) {
 	    String uri = request.getRequestURL().toString() + "?" + request.getQueryString();
 	    MultiValueMap<String, String> parameters =

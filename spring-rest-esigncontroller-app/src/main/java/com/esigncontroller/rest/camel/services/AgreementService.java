@@ -10,6 +10,7 @@ import org.apache.camel.Produce;
 import org.apache.camel.ProducerTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -43,6 +44,12 @@ public class AgreementService {
     @Produce
     private ProducerTemplate template;
     
+	@Value("${api.integration.key}")
+	private String IntegrationKey;
+	
+	@Value("${api.access.point}")
+	private static String apiAccessPoint;
+    
     private static final Logger logger = LoggerFactory.getLogger(AgreementService.class);
     
     private static final String GET_AGREEMENTS_ENDPOINT = "/agreements";
@@ -53,18 +60,36 @@ public class AgreementService {
     
     private static final String GET_DOCFILESTREAM_ENDPOINT = "/agreements/{agreementId}/documents/{documentId}";
     
-    public final static String GET_AGREEMENTS_URL = GlobalConstants.API_ACCESS_POINT + GlobalConstants.REST_API_VERSION + GET_AGREEMENTS_ENDPOINT;
+    public final static String GET_AGREEMENTS_URL = apiAccessPoint + GlobalConstants.REST_API_VERSION + GET_AGREEMENTS_ENDPOINT;
 
-    public final static String GET_AGREEMENTBYID_URL = GlobalConstants.API_ACCESS_POINT + GlobalConstants.REST_API_VERSION + GET_AGREEMENTBYID_ENDPOINT;
+    public final static String GET_AGREEMENTBYID_URL = apiAccessPoint + GlobalConstants.REST_API_VERSION + GET_AGREEMENTBYID_ENDPOINT;
     
-    public final static String GET_DOCID_OF_AGREEMENT_URL = GlobalConstants.API_ACCESS_POINT + GlobalConstants.REST_API_VERSION + GET_DOCID_ENDPOINT;
+    public final static String GET_DOCID_OF_AGREEMENT_URL = apiAccessPoint + GlobalConstants.REST_API_VERSION + GET_DOCID_ENDPOINT;
     
-    public final static String GET_DOCFILESTREAM_OF_AGREEMENT_URL = GlobalConstants.API_ACCESS_POINT + GlobalConstants.REST_API_VERSION + GET_DOCFILESTREAM_ENDPOINT;
+    public final static String GET_DOCFILESTREAM_OF_AGREEMENT_URL = apiAccessPoint + GlobalConstants.REST_API_VERSION + GET_DOCFILESTREAM_ENDPOINT;
     
-    public final static String DELETE_DOC_OF_AGREEMENT_URL = GlobalConstants.API_ACCESS_POINT + GlobalConstants.REST_API_VERSION + GET_DOCID_ENDPOINT;
+    public final static String DELETE_DOC_OF_AGREEMENT_URL = apiAccessPoint + GlobalConstants.REST_API_VERSION + GET_DOCID_ENDPOINT;
     
     public final static String REQUEST_PATH = "com/esigncontroller/rest/camel/documents/";
+    
       
+/*    @GetMapping("/webhook/getsigneddoc")
+    public String getSignedAgreementsWebHook(){
+		RestTemplate restTemplate = new RestTemplate();
+    	// Create header list for the request.
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.set("Authorization", IntegrationKey);
+
+        HttpEntity<String> entity = new HttpEntity<String>(headers);
+        ResponseEntity<String> response = restTemplate.exchange(GET_AGREEMENTS_URL, HttpMethod.GET, entity, String.class);
+        
+        System.out.println(response.getBody());
+		logger.info(response.getBody().toString());
+		
+	    return response.getBody();
+    }*/
+    
     //Retrieves agreements for the user
     //TEST URL: https://localhost:8443/agreements
     @GetMapping("/agreements")
@@ -73,7 +98,7 @@ public class AgreementService {
     	// Create header list for the request.
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
-		headers.set("Authorization", GlobalConstants.ACCESS_TOKEN);
+		headers.set("Authorization", IntegrationKey);
 
         HttpEntity<String> entity = new HttpEntity<String>(headers);
         ResponseEntity<UserAgreementListResponse> response = restTemplate.exchange(GET_AGREEMENTS_URL, HttpMethod.GET, entity, UserAgreementListResponse.class);
@@ -90,7 +115,7 @@ public class AgreementService {
     	// Create header list for the request.
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
-		headers.set("Authorization", GlobalConstants.ACCESS_TOKEN);
+		headers.set("Authorization", IntegrationKey);
 
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("agreementId", agreementId);
@@ -112,7 +137,7 @@ public class AgreementService {
     	// Create header list for the request.
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
-		headers.set("Authorization", GlobalConstants.ACCESS_TOKEN);
+		headers.set("Authorization", IntegrationKey);
 
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("agreementId", agreementId);
@@ -146,7 +171,7 @@ public class AgreementService {
     	restTemplate.setMessageConverters(messageConverters);
     	// Create header list for the request.
 		HttpHeaders headers = new HttpHeaders();
-		headers.set("Authorization", GlobalConstants.ACCESS_TOKEN);
+		headers.set("Authorization", IntegrationKey);
 		headers.setContentType(MediaType.parseMediaType("application/pdf"));
 
 		Map<String, String> params = new HashMap<String, String>();
@@ -168,7 +193,7 @@ public class AgreementService {
     	// Create header list for the request.
 		HttpHeaders headers = new HttpHeaders();
 		//headers.setContentType(MediaType.APPLICATION_JSON);
-		headers.set("Authorization", GlobalConstants.ACCESS_TOKEN);
+		headers.set("Authorization", IntegrationKey);
 		//This is ETAG Value need to be sent by user after received from the getAgreementById endpoint above.
 		//eg: for agreement id->CBJCHBCAABAAvs3vXL0B5LGZGN-U5emdtQ38uNNq6vUV
 		//ETAG value is A432ABA253823BBC32B5381BA24CE43.4D54FA57C93BA83731352917FEF5A82

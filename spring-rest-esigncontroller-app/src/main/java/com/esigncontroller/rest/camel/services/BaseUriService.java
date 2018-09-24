@@ -5,6 +5,7 @@ import org.apache.camel.Produce;
 import org.apache.camel.ProducerTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -26,12 +27,15 @@ public class BaseUriService {
 
     public final static String URL = "https://secure.na2.echosign.com/api/rest/v6/baseUris";
     
-	@GetMapping("/base_uris")
+	@Value("${api.integration.key}")
+	private String IntegrationKey;
+    
+    @GetMapping("/base_uris")
 	public String getBaseURI() {
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
-		headers.set("Authorization", GlobalConstants.ACCESS_TOKEN);
+		headers.set("Authorization", IntegrationKey);
         HttpEntity<String> entity = new HttpEntity<String>(headers);
         ResponseEntity<BaseURIResponse> response = restTemplate.exchange(URL, HttpMethod.GET, entity, BaseURIResponse.class);        
         System.out.println(response.getBody());

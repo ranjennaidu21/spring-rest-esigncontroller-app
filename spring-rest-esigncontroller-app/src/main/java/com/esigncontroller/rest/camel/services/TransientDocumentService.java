@@ -8,6 +8,7 @@ import org.apache.camel.Produce;
 import org.apache.camel.ProducerTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -31,20 +32,27 @@ public class TransientDocumentService {
     @Produce
     private ProducerTemplate template;
     
+	@Value("${api.integration.key}")
+	private String IntegrationKey;
+	
+	@Value("${api.access.point}")
+	private static String apiAccessPoint;
+    
     private static final Logger logger = LoggerFactory.getLogger(TransientDocumentService.class);
     
     private static final String TRANSIENT_DOCUMENTS_ENDPOINT = "/transientDocuments";
 
-    public final static String POSTTRANSIENTDOCUMENTSURL = GlobalConstants.API_ACCESS_POINT + GlobalConstants.REST_API_VERSION + TRANSIENT_DOCUMENTS_ENDPOINT;
+    public final static String POSTTRANSIENTDOCUMENTSURL = apiAccessPoint + GlobalConstants.REST_API_VERSION + TRANSIENT_DOCUMENTS_ENDPOINT;
 
     public final static String REQUEST_PATH = "com/esigncontroller/rest/camel/documents/";
     
+	
     @PostMapping("/transientDocuments")
     public TransientDocumentResponse uploadTransientDocument(@Valid @RequestBody TransientDocumentRequest transientDocumentRequest) throws IOException {
 
     	// Create header list for the request.
     	HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", GlobalConstants.ACCESS_TOKEN);
+        headers.set("Authorization", IntegrationKey);
         headers.set("accept","application/json");
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
