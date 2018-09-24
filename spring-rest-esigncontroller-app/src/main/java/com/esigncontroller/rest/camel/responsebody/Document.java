@@ -11,6 +11,7 @@ public class Document
     private String name;
     private String mimeType;
     private String numPages;
+    private String eTag;
     
 	public String getId() {
 		return id;
@@ -36,9 +37,21 @@ public class Document
 	public void setNumPages(String numPages) {
 		this.numPages = numPages;
 	}
+	
+	public String geteTag() {
+		return eTag;
+	}
+	
+	public void seteTag(String eTag) {
+		this.eTag = eTag;
+	}
+	
 	@Override
 	public String toString() {
-		return "Document [id=" + id + ", name=" + name + ", mimeType=" + mimeType + ", numPages=" + numPages + "]";
+		return "Document [id=" + id + ", name=" + name + ", mimeType=" + mimeType + ", numPages=" + numPages + ", eTag="
+				+ eTag + "]";
 	}
+	
+	
 
 }

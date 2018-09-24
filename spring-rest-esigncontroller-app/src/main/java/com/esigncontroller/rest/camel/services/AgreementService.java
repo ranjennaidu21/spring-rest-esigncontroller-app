@@ -84,6 +84,26 @@ public class AgreementService {
 	    return response.getBody();
     }
     
+    @GetMapping("/agreements/{agreementId}")
+    public AgreementByIdResponse getAgreementById(@PathVariable String agreementId){
+		RestTemplate restTemplate = new RestTemplate();
+    	// Create header list for the request.
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.set("Authorization", GlobalConstants.ACCESS_TOKEN);
+
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("agreementId", agreementId);
+		
+        HttpEntity<String> entity = new HttpEntity<String>(headers);
+        ResponseEntity<AgreementByIdResponse> response = restTemplate.exchange(GET_AGREEMENTBYID_URL, HttpMethod.GET, entity, AgreementByIdResponse.class,params);
+
+        System.out.println(response.getBody());
+		logger.info(response.getBody().toString());
+		
+	    return response.getBody();
+    }
+    
     //Retrieves the IDs of the documents of an agreement identified by agreementId
     //TEST URL: https://localhost:8443/agreements/CBJCHBCAABAAoEsmqdufWDBKCM52i-5lroE6eYpP2m7y/documents
     @GetMapping("/agreements/{agreementId}/documents")
@@ -99,6 +119,9 @@ public class AgreementService {
 		
         HttpEntity<String> entity = new HttpEntity<String>(headers);
         ResponseEntity<DocumentListResponse> response = restTemplate.exchange(GET_DOCID_OF_AGREEMENT_URL, HttpMethod.GET, entity, DocumentListResponse.class,params);
+        HttpHeaders responseHeaders = response.getHeaders();
+		response.getBody().getDocuments().get(0).seteTag(responseHeaders.getFirst("ETag"));
+		
         System.out.println(response.getBody());
 		logger.info(response.getBody().toString());
 		
@@ -135,30 +158,8 @@ public class AgreementService {
 	    return response;
     }
     
-    //Retrieve agreement details as per id to get the ETAG value
-    @GetMapping("/agreements/{agreementId}")
-    public AgreementByIdResponse getAgreementById(@PathVariable String agreementId){
-		RestTemplate restTemplate = new RestTemplate();
-    	// Create header list for the request.
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		headers.set("Authorization", GlobalConstants.ACCESS_TOKEN);
-
-		Map<String, String> params = new HashMap<String, String>();
-		params.put("agreementId", agreementId);
-		
-        HttpEntity<String> entity = new HttpEntity<String>(headers);
-        ResponseEntity<AgreementByIdResponse> response = restTemplate.exchange(GET_AGREEMENTBYID_URL, HttpMethod.GET, entity, AgreementByIdResponse.class,params);
-        
-        HttpHeaders responseHeaders = response.getHeaders();
-		response.getBody().seteTag(responseHeaders.getFirst("ETag"));
-        System.out.println(response.getBody());
-		logger.info(response.getBody().toString());
-		
-	    return response.getBody();
-    }
-    
     //TO DO : DELETE /agreements/{agreementId}/documents >> Deletes all the documents of an agreement
+    // The ETAG value of the document to be deleted can be retrieved by calling /agreements/{agreementId}/documents
     //TEST URL: https://localhost:8443/agreements/CBJCHBCAABAAvs3vXL0B5LGZGN-U5emdtQ38uNNq6vUV/documents/432ABA253823BBC32B5381BA24CE43.4D54FA57C93BA83731352917FEF5A82
     @DeleteMapping("/agreements/{agreementId}/documents/{eTag}")
     public HttpStatus deleteAllDocOfAgreement(@PathVariable String agreementId,@PathVariable String eTag){
@@ -180,9 +181,5 @@ public class AgreementService {
         ResponseEntity<String> response = restTemplate.exchange(DELETE_DOC_OF_AGREEMENT_URL, HttpMethod.DELETE, entity, String.class,params);
         HttpStatus statusCode = response.getStatusCode();
         return statusCode;
-/*        System.out.println(response.getBody());
-		logger.info(response.getBody().toString());
-		
-	    return response.getBody();*/
     }
 }

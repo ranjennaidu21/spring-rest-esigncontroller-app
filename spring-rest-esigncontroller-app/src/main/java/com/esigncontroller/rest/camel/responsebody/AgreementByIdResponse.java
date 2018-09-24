@@ -7,7 +7,6 @@ import lombok.Data;
 @Data
 public class AgreementByIdResponse
 {
-	private String eTag;
     private String id;
     private String name;
     private String message;
@@ -19,12 +18,6 @@ public class AgreementByIdResponse
     private String status;
     private String documentVisibilityEnabled;
     
-	public String geteTag() {
-		return eTag;
-	}
-	public void seteTag(String eTag) {
-		this.eTag = eTag;
-	}
 	public String getId() {
 		return id;
 	}
@@ -87,11 +80,13 @@ public class AgreementByIdResponse
 	}
 	@Override
 	public String toString() {
-		return "AgreementByIdResponse [eTag=" + eTag + ", id=" + id + ", name=" + name + ", message=" + message
-				+ ", participantSetsInfo=" + participantSetsInfo + ", senderEmail=" + senderEmail + ", createdDate="
-				+ createdDate + ", signatureType=" + signatureType + ", locale=" + locale + ", status=" + status
+		return "AgreementByIdResponse [id=" + id + ", name=" + name + ", message=" + message + ", participantSetsInfo="
+				+ participantSetsInfo + ", senderEmail=" + senderEmail + ", createdDate=" + createdDate
+				+ ", signatureType=" + signatureType + ", locale=" + locale + ", status=" + status
 				+ ", documentVisibilityEnabled=" + documentVisibilityEnabled + "]";
 	}
+
+	
 
 	
  
