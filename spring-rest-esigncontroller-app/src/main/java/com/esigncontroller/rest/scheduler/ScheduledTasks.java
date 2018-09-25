@@ -41,14 +41,14 @@ public class ScheduledTasks {
 
 	private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 	
-	private static final String IP_ADDRESS = "https://localhost:8443";
+	private static final String IP_ADDRESS = "http://localhost:8080";
 
 	/* <second> <minute> <hour> <day-of-month> <month> <day-of-week> */
 	/* every hour 0 0 * ? * *       */
 	/*to test every 10sec 0/10 * * * * **/
-	@Scheduled(cron = "0 0 * ? * *")
+	@Scheduled(cron = "0/10 * * * * *")
 	public void scheduleTaskWithCronExpression() throws KeyManagementException, NoSuchAlgorithmException {
-		SSLUtil.turnOffSslChecking();
+		//SSLUtil.turnOffSslChecking();
 		logger.info("Cron Task :: Execution Time - {}", dateTimeFormatter.format(LocalDateTime.now()));
 		List<Outbound> outBoundList = outboundRepository.findAll();
 		if (outBoundList == null || outBoundList.size() <= 0) {

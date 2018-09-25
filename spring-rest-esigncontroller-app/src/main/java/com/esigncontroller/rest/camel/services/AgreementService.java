@@ -91,7 +91,7 @@ public class AgreementService {
     }*/
     
     //Retrieves agreements for the user
-    //TEST URL: https://localhost:8443/agreements
+    //TEST URL: http://localhost:8080/agreements
     @GetMapping("/agreements")
     public UserAgreementListResponse getAgreements(){
 		RestTemplate restTemplate = new RestTemplate();
@@ -130,7 +130,7 @@ public class AgreementService {
     }
     
     //Retrieves the IDs of the documents of an agreement identified by agreementId
-    //TEST URL: https://localhost:8443/agreements/CBJCHBCAABAAoEsmqdufWDBKCM52i-5lroE6eYpP2m7y/documents
+    //TEST URL: http://localhost:8080/agreements/CBJCHBCAABAAoEsmqdufWDBKCM52i-5lroE6eYpP2m7y/documents
     @GetMapping("/agreements/{agreementId}/documents")
     public DocumentListResponse getDocIdOfAgreement(@PathVariable String agreementId){
 		RestTemplate restTemplate = new RestTemplate();
@@ -154,7 +154,7 @@ public class AgreementService {
     }
     
     //Retrieves the file stream of a document of an agreement.
-    //TEST URL: https://localhost:8443/agreements/CBJCHBCAABAAoEsmqdufWDBKCM52i-5lroE6eYpP2m7y/documents/3AAABLblqZhDxrwoOt3W1UaPotZevekbVAZdAiNVvQGIXfwsaSCCZo7c7K3_3TTbo-BRRgxMeiIYtoMHwd2nRkWkl1IRrIVt1
+    //TEST URL: http://localhost:8080/agreements/CBJCHBCAABAAoEsmqdufWDBKCM52i-5lroE6eYpP2m7y/documents/3AAABLblqZhDxrwoOt3W1UaPotZevekbVAZdAiNVvQGIXfwsaSCCZo7c7K3_3TTbo-BRRgxMeiIYtoMHwd2nRkWkl1IRrIVt1
     @GetMapping("/agreements/{agreementId}/documents/{documentId}")
     public ResponseEntity<byte[]> getDocFileStreamOfAgreement(@PathVariable String agreementId,@PathVariable String documentId){
     	ByteArrayHttpMessageConverter byteArrayHttpMessageConverter = new ByteArrayHttpMessageConverter();
@@ -185,7 +185,7 @@ public class AgreementService {
     
     //TO DO : DELETE /agreements/{agreementId}/documents >> Deletes all the documents of an agreement
     // The ETAG value of the document to be deleted can be retrieved by calling /agreements/{agreementId}/documents
-    //TEST URL: https://localhost:8443/agreements/CBJCHBCAABAAvs3vXL0B5LGZGN-U5emdtQ38uNNq6vUV/documents/432ABA253823BBC32B5381BA24CE43.4D54FA57C93BA83731352917FEF5A82
+    //TEST URL: http://localhost:8080/agreements/CBJCHBCAABAAvs3vXL0B5LGZGN-U5emdtQ38uNNq6vUV/documents/432ABA253823BBC32B5381BA24CE43.4D54FA57C93BA83731352917FEF5A82
     @DeleteMapping("/agreements/{agreementId}/documents/{eTag}")
     public HttpStatus deleteAllDocOfAgreement(@PathVariable String agreementId,@PathVariable String eTag){
     	

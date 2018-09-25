@@ -1,4 +1,4 @@
-package com.esigncontroller.rest.scheduler;
+/*package com.esigncontroller.rest.scheduler;
 
 import javax.net.ssl.*;
 import java.security.*;
@@ -31,4 +31,4 @@ public final class SSLUtil{
     private SSLUtil(){
         throw new UnsupportedOperationException( "Do not instantiate libraries.");
     }
-}
+}*/
