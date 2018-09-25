@@ -16,7 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -25,9 +24,6 @@ public class AdobeEsignService {
 	
     @Produce
     private ProducerTemplate template;
-	
-	private static final Logger logger = LoggerFactory.getLogger(AdobeEsignService.class);
-	private static String AuthorizationCode = "";
 	
 	//currently not working , need to find a way to execute the 1) Authorization Token request
 	//which we did from browser as below ,should return the code value
@@ -63,8 +59,6 @@ public class AdobeEsignService {
 	    List<String> api_access_point_list = parameters.get("api_access_point");
 	    List<String> web_access_point_list = parameters.get("web_access_point");
 	    String code = code_list.get(0);
-	    //storing the retrieved code value
-	    AuthorizationCode = code;
 	    String api_access_point = api_access_point_list.get(0);
 	    String web_access_point = web_access_point_list.get(0);
 	    System.out.println("param1: " + code_list.get(0));

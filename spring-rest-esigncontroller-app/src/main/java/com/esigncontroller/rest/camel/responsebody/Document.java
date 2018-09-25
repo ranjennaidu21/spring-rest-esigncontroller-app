@@ -1,7 +1,5 @@
 package com.esigncontroller.rest.camel.responsebody;
 
-import java.util.List;
-
 import lombok.Data;
 
 @Data

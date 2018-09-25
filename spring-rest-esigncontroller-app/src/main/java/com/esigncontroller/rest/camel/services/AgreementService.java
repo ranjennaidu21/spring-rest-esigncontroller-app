@@ -1,6 +1,5 @@
 package com.esigncontroller.rest.camel.services;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.esigncontroller.rest.camel.responsebody.AgreementByIdResponse;
-import com.esigncontroller.rest.camel.responsebody.DeleteAgreementDocResponse;
 import com.esigncontroller.rest.camel.responsebody.DocumentListResponse;
 import com.esigncontroller.rest.camel.responsebody.UserAgreementListResponse;
 import com.esigncontroller.rest.camel.util.GlobalConstants;

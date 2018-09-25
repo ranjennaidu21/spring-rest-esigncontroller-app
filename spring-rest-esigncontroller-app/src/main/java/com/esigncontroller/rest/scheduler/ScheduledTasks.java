@@ -12,6 +12,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -36,19 +37,19 @@ public class ScheduledTasks {
 	
 	@Autowired
 	private OutboundRepository outboundRepository;
+	
+	@Value("${upload.folder.path}")
+	private String uploadFolder;
+	
+	@Value("${scheduler.endpoint}")
+	private String schedulerEndPoint;
 
 	private static final Logger logger = LoggerFactory.getLogger(ScheduledTasks.class);
 
 	private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-	
-	private static final String IP_ADDRESS = "http://localhost:8080";
 
-	/* <second> <minute> <hour> <day-of-month> <month> <day-of-week> */
-	/* every hour 0 0 * ? * *       */
-	/*to test every 10sec 0/10 * * * * **/
-	@Scheduled(cron = "0/10 * * * * *")
+	@Scheduled(cron = "${scheduler.cron.expression}")
 	public void scheduleTaskWithCronExpression() throws KeyManagementException, NoSuchAlgorithmException {
-		//SSLUtil.turnOffSslChecking();
 		logger.info("Cron Task :: Execution Time - {}", dateTimeFormatter.format(LocalDateTime.now()));
 		List<Outbound> outBoundList = outboundRepository.findAll();
 		if (outBoundList == null || outBoundList.size() <= 0) {
@@ -65,7 +66,7 @@ public class ScheduledTasks {
 
 				// get the agreement details based on id retrieved above
 				RestTemplate restTemplate = new RestTemplate();
-				String url = IP_ADDRESS + "/agreements/" + agreementId;
+				String url = schedulerEndPoint + "/agreements/" + agreementId;
 				AgreementByIdResponse response = restTemplate.getForObject(url, AgreementByIdResponse.class);
 				String agreementStatus = response.getStatus();
 				
@@ -75,7 +76,7 @@ public class ScheduledTasks {
 						
 						// get all the documents ids for the agreement
 						RestTemplate agreemetDocsRestTemplate = new RestTemplate();
-						String documentListUrl = IP_ADDRESS + "/agreements/" + agreementId + "/documents";
+						String documentListUrl = schedulerEndPoint + "/agreements/" + agreementId + "/documents";
 						DocumentListResponse documentListResponse = agreemetDocsRestTemplate.getForObject(documentListUrl,
 								DocumentListResponse.class);
 						List<Document> documentList = documentListResponse.getDocuments();
@@ -85,7 +86,6 @@ public class ScheduledTasks {
 						}
 							for (Document document : documentList) {
 								//before download - store all the record of documentid,agreementId,inboundStatus[COMPLETED] retrieved into inbound db , 
-								final String uploadFolder = "C:\\temp\\";
 								String docId = document.getId();
 								Inbound inboundRequest = new Inbound();
 								inboundRequest.setAgreementId(agreementId);
@@ -95,7 +95,7 @@ public class ScheduledTasks {
 								inboundRepository.save(inboundRequest);
 								// download the document
 								RestTemplate downloadFileStreamRestTemplate = new RestTemplate();
-								String downloadDocURL = IP_ADDRESS + "/agreements/" + agreementId + "/documents/"
+								String downloadDocURL = schedulerEndPoint + "/agreements/" + agreementId + "/documents/"
 										+ docId;
 								byte[] docFileStreamResponse = downloadFileStreamRestTemplate.getForObject(downloadDocURL,
 										byte[].class);
@@ -116,7 +116,6 @@ public class ScheduledTasks {
 	}
 	
 	public void writeBytesToFileStream(String UploadFolder,byte[] bFile,String fileName) {
-		//final String UPLOAD_FOLDER = "C:\\temp\\";
 		FileInputStream fileInputStream = null;
 		try {
             //save bytes[] into a file
