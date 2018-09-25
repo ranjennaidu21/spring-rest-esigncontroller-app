@@ -1,7 +1,0 @@
-{
-    "client_id":"CBJCHBCAABAAxaDkAU93ynVnvNDZ7H4pG8AZLq26Ws1L",
-    "client_secret":"WDSYFe5CyH4oPY6nEPIBuP7rvGsl0e97",
-    "redirect_uri":"https://localhost:8443/oauth/test",
-    "code":"CBNCKBAAHBCAABAAzrKypbIfJkZlQT9UtHpuiW4DTWyoSviO",
-    "grant_type":"authorization_code"
-}

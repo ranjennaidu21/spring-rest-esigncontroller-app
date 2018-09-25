@@ -1,10 +1,11 @@
 package com.esigncontroller.rest.camel.services;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.camel.Produce;
 import org.apache.camel.ProducerTemplate;
 import org.slf4j.Logger;
@@ -21,6 +22,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -28,12 +30,7 @@ import com.esigncontroller.rest.camel.responsebody.AgreementByIdResponse;
 import com.esigncontroller.rest.camel.responsebody.DocumentListResponse;
 import com.esigncontroller.rest.camel.responsebody.UserAgreementListResponse;
 import com.esigncontroller.rest.camel.util.GlobalConstants;
-
-/*
- * Example:
- * agreement id = CBJCHBCAABAAoEsmqdufWDBKCM52i-5lroE6eYpP2m7y
- * doc id = 3AAABLblqZhDxrwoOt3W1UaPotZevekbVAZdAiNVvQGIXfwsaSCCZo7c7K3_3TTbo-BRRgxMeiIYtoMHwd2nRkWkl1IRrIVt1
-*/
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @RestController
@@ -70,23 +67,17 @@ public class AgreementService {
     
     public final static String REQUEST_PATH = "com/esigncontroller/rest/camel/documents/";
     
-      
-/*    @GetMapping("/webhook/getsigneddoc")
-    public String getSignedAgreementsWebHook(){
-		RestTemplate restTemplate = new RestTemplate();
-    	// Create header list for the request.
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		headers.set("Authorization", IntegrationKey);
-
-        HttpEntity<String> entity = new HttpEntity<String>(headers);
-        ResponseEntity<String> response = restTemplate.exchange(GET_AGREEMENTS_URL, HttpMethod.GET, entity, String.class);
-        
-        System.out.println(response.getBody());
-		logger.info(response.getBody().toString());
-		
-	    return response.getBody();
-    }*/
+    @GetMapping(value="/webhook",headers = "Accept="+ MediaType.APPLICATION_JSON_UTF8_VALUE, produces = "application/json")
+    public ResponseEntity<String>  webhook(@RequestHeader("X-ADOBESIGN-CLIENTID") String signature,@RequestHeader("User-Agent") String userAgent) throws IOException
+    {
+        logger.debug("Registering WebHook : [{}]",signature);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-AdobeSign-ClientId", signature);
+        headers.add("Content-Type","application/json");
+        ResponseEntity<String> response = new ResponseEntity<>(new ObjectMapper().writeValueAsString(Collections.singletonMap("xAdobeSignClientId",signature)),headers, HttpStatus.OK);
+        return response;
+    }
+    
     
     //Retrieves agreements for the user
     //TEST URL: http://localhost:8080/agreements
@@ -193,8 +184,6 @@ public class AgreementService {
 		//headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.set("Authorization", IntegrationKey);
 		//This is ETAG Value need to be sent by user after received from the getAgreementById endpoint above.
-		//eg: for agreement id->CBJCHBCAABAAvs3vXL0B5LGZGN-U5emdtQ38uNNq6vUV
-		//ETAG value is A432ABA253823BBC32B5381BA24CE43.4D54FA57C93BA83731352917FEF5A82
 		headers.set("If-Match", eTag);
 
 		Map<String, String> params = new HashMap<String, String>();
