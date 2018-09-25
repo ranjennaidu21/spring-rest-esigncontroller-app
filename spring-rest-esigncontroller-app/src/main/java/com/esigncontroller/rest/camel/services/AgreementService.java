@@ -22,10 +22,13 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.esigncontroller.rest.camel.payload.responsebody.AgreementPayloadResponse;
 import com.esigncontroller.rest.camel.responsebody.AgreementByIdResponse;
 import com.esigncontroller.rest.camel.responsebody.DocumentListResponse;
 import com.esigncontroller.rest.camel.responsebody.UserAgreementListResponse;
@@ -78,6 +81,22 @@ public class AgreementService {
         return response;
     }
     
+    @PostMapping(value = "/webhook", headers = "Accept="+ MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public String webhookPost(@RequestHeader("X-ADOBESIGN-CLIENTID") String signature,@RequestHeader("User-Agent") String userAgent,@RequestBody AgreementPayloadResponse payload) throws IOException {
+        {	
+            //deserialize payload
+            // check payload event payload.containsKey("event").equalsIgnoreCase("AGREEMENT_ACTION_COMPLETED")
+            //get agreement status, check the status is SIGNED
+            //write your logic
+        	String agreementId = payload.getAgreement().getId();
+        	String agreementName = payload.getAgreement().getName();
+        	String agreementCreatedDate = payload.getAgreement().getCreatedDate();
+        	String agreementStatus = payload.getAgreement().getStatus();
+
+        	System.out.println(payload.toString());
+        }
+		return payload.toString();
+    }
     
     //Retrieves agreements for the user
     //TEST URL: http://localhost:8080/agreements

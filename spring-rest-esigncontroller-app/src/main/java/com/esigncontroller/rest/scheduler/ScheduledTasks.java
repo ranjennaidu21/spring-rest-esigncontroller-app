@@ -48,7 +48,7 @@ public class ScheduledTasks {
 
 	private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
-	/*@Scheduled(cron = "${scheduler.cron.expression}")*/
+	@Scheduled(cron = "${scheduler.cron.expression}")
 	public void scheduleTaskWithCronExpression() throws KeyManagementException, NoSuchAlgorithmException {
 		logger.info("Cron Task :: Execution Time - {}", dateTimeFormatter.format(LocalDateTime.now()));
 		List<Outbound> outBoundList = outboundRepository.findAll();
